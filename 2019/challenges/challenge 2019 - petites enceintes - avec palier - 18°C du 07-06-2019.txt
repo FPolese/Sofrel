@@ -1,0 +1,2149 @@
+// Programme :  Challenge 2019 avec descente et palier
+// version : V1.1
+// modification du 07 / 06 / 2019
+// spécificité : programme pour température 18°C
+
+// Observateur 1
+// seuil 
+// Stabulation     4  / -2
+// 100%            4  / -2
+// descente 90%    3 / -1
+// palier 90%      3 / -1
+// descente 80%    2 / -2 
+// palier 80%      3 / -1 
+// descente 70%    1.5 / -3.5
+// palier 70%      1.5 / -2.5
+// descente 60%    0.5 / -5
+// palier 60%      0 / -4
+// descente 50%    0 / -6
+// palier 50%      0 / -4.5
+// descente 40%    0 / -6
+// palier 40%      0.5 / -4
+// descente 30%    -2.5 / -9
+// palier 30%      -5.5 / -12
+
+
+// Tempo Azote                         Tempo Oxygène
+// Stabulation .. 0.5 / 30 ........................  0.3 / 60
+// 100% ..........0.5 / 30 ........................  0.3 / 60
+// descente 90% ..0.5 / 30 ........................  0.5 / 60
+// paltier 90% ...0.5 / 25 ........................  0.5 / 60
+// descente 80% ..0.5 / 30 ........................  0.5 / 60
+// paltier 80% ...0.5 / 25 ........................  0.5 / 60
+// descente 70% ..0.5 / 25 ........................  0.5 / 60
+// paltier 70% ...0.5 / 20 ........................  0.5 / 60
+// descente 60% ..0.5 / 20 ........................  0.5 / 60
+// paltier 60% ...0.5 / 15 ........................  0.5 / 60
+// descente 50% ..0.5 / 12 ........................  0.5 / 60
+// paltier 50% ...0.5 / 10 ........................  0.5 / 60
+// descente 40% ..0.5 / 10 ........................  0.5 / 60
+// paltier 40% ...0.5 / 8  ........................  0.5 / 60
+// descente 30% ..0.5 / 6  ........................  0.5 / 60
+// paltier 30% ...0.5 / 4  ........................  0.5 / 60
+
+
+
+// Observateur 2
+// seuil 
+// Stabulation     10  / 4
+// 100%            10  / 4
+// descente 90%    9 / 5
+// palier 90%      9 / 5
+// descente 80%    7 / 3
+// palier 80%      8 / 4
+// descente 70%    6.5 / 1.5
+// palier 70%      6.5 / 2.5
+// descente 60%    6.5 / 1
+// palier 60%      6 / 2
+// descente 50%    5.5 / -0.5
+// palier 50%      5.5 / 1
+// descente 40%    3.5 / -2.5
+// palier 40%      4 / -0.5
+// descente 30%    6.5 / 0
+// palier 30%      6.5 / 0
+
+
+// Tempo Azote                         Tempo Oxygène
+// Stabulation .. 0.5 / 30 ........................  0.3 / 60
+// 100% ..........0.5 / 30 ........................  0.3 / 60
+// descente 90% ..0.5 / 30 ........................  0.5 / 60
+// paltier 90% ...0.5 / 25 ........................  0.5 / 60
+// descente 80% ..0.5 / 30 ........................  0.5 / 60
+// paltier 80% ...0.5 / 25 ........................  0.5 / 60
+// descente 70% ..0.5 / 25 ........................  0.5 / 60
+// paltier 70% ...0.5 / 20 ........................  0.5 / 60
+// descente 60% ..0.5 / 20 ........................  0.5 / 60
+// paltier 60% ...0.5 / 15 ........................  0.5 / 60
+// descente 50% ..0.5 / 12 ........................  0.5 / 60
+// paltier 50% ...0.5 / 10 ........................  0.5 / 60
+// descente 40% ..0.5 / 10 ........................  0.5 / 60
+// paltier 40% ...0.5 / 8  ........................  0.5 / 60
+// descente 30% ..0.5 / 6  ........................  0.5 / 60
+// paltier 30% ...0.5 / 4  ........................  0.5 / 60
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                   Début Stabulation                                                                    //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//bouton sur position Stabulation
+
+if data21 = true and data20 = false
+then
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                  Normoxie                                                                              //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//observateur 1
+// Oxygène
+
+if data1 < real(100) +real(-2)
+then data36 :=true;
+tstart(impulse_O_Norm_1);
+     if impulse_O_Norm_1>t#300ms
+     then data36 := false;
+          tstop(impulse_O_Norm_1);
+          tstart(pause_O_Norm_1);
+          if pause_O_Norm_1 >= t#60s
+             then tstop(pause_O_Norm_1);
+                  pause_O_Norm_1 := t#0s;
+                  impulse_O_Norm_1 := t#0s;
+          end_if;
+      end_if;
+else data36 := false;
+tstop(impulse_O_Norm_1);
+tstop(pause_O_Norm_1);
+pause_O_Norm_1 := t#0s;
+impulse_O_Norm_1 := t#0s;
+end_if;
+
+//Azote
+
+if data1 > real(100) +real(4) 
+   then data37 := true;
+        tstart(impulse_N_Norm_1);
+        if impulse_N_Norm_1 >= t#500ms
+           then data37 := false;
+                tstop(impulse_N_Norm_1);
+                tstart(pause_N_Norm_1);
+                if pause_N_Norm_1 >= t#30s
+                   then tstop(pause_N_Norm_1);
+                        pause_N_Norm_1 :=t#0s;
+                        impulse_N_Norm_1 :=t#0s;
+                end_if;
+       end_if;
+else data37 := false;
+tstop(pause_N_Norm_1);
+tstop(impulse_N_Norm_1);
+pause_N_Norm_1 :=t#0s;
+impulse_N_Norm_1 :=t#0s;
+end_if;
+
+
+// observateur 2 
+//Oxygène
+
+if data5 < real(100) +real(4)  
+then data35 :=true;
+tstart(impulse_O_Norm_2);
+     if impulse_O_Norm_2>t#300ms
+     then data35 := false;
+          tstop(impulse_O_Norm_2);
+          tstart(pause_O_Norm_2);
+          if pause_O_Norm_2 >= t#60s
+             then tstop(pause_O_Norm_2);
+                  pause_O_Norm_2 := t#0s;
+                  impulse_O_Norm_2 := t#0s;
+          end_if;
+      end_if;
+else data35 := false;
+tstop(impulse_O_Norm_2);
+tstop(pause_O_Norm_2);
+pause_O_Norm_2 := t#0s;
+impulse_O_Norm_2 := t#0s;
+end_if;
+
+
+//Azote 
+
+if data5 > real(100) +real(10) 
+   then data38 := true;
+        tstart(impulse_N_Norm_2);
+        if impulse_N_Norm_2 >= t#500ms
+           then data38 := false;
+                tstop(impulse_N_Norm_2);
+                tstart(pause_N_Norm_2);
+                if pause_N_Norm_2 >= t#30s
+                   then tstop(pause_N_Norm_2);
+                        pause_N_Norm_2 :=t#0s;
+                        impulse_N_Norm_2 :=t#0s;
+                end_if;
+       end_if;
+else data38 := false;
+tstop(pause_N_Norm_2);
+tstop(impulse_N_Norm_2);
+pause_N_Norm_2 :=t#0s;
+impulse_N_Norm_2 :=t#0s;
+end_if;
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////
+//                            Hypoxie                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////
+
+
+//observateur 1
+//Azote
+
+ if data9 > real(100) +REAL(4)
+      then data30 := true;
+         tstart(impuls_Azot_obs1);
+         tstop(pause_oxy_obs1);
+         pause_oxy_obs1 := t#0s;
+         impuls_Oxy_obs1 :=t#0s;
+         if impuls_Azot_obs1 >= t#500ms
+            then data30 := false;
+               tstop(impuls_Azot_obs1);
+               tstart(pause_Azot_obs1);
+               if pause_Azot_obs1 >= t#30s
+                  then tstop(pause_Azot_obs1);
+                     pause_Azot_obs1 :=t#0s;
+                     impuls_Azot_obs1 :=t#0s;
+               end_if;
+         end_if;
+   else data30 := false;
+   tstop(pause_Azot_obs1);
+   tstop(impuls_Azot_obs1);
+   pause_Azot_obs1 :=t#0s;
+   impuls_Azot_obs1 :=t#0s;
+   end_if;
+
+//Oxygène
+
+if data9 < real(100) +REAL(-2)
+      then  data32 := true;
+      tstart(impuls_Oxy_obs1);
+      tstop(pause_Azot_obs1);
+      pause_Azot_obs1 :=t#0s;
+      impuls_Azot_obs1 :=t#0s;
+          if impuls_Oxy_obs1 >= t#300ms
+            then  data32 := false;
+                 tstop(impuls_Oxy_obs1);
+                 tstart(pause_Oxy_obs1);
+                 if pause_Oxy_obs1 >= t#60s
+                   then tstop(pause_Oxy_obs1);
+                       pause_Oxy_obs1 :=t#0s;
+                       impuls_Oxy_obs1 :=t#0s;
+                 end_if;
+          end_if;
+   else data32 := false;
+   tstop(impuls_Oxy_obs1);
+   tstop(pause_Oxy_obs1);    
+   pause_Oxy_obs1 :=t#0s;    
+   impuls_Oxy_obs1 :=t#0s;          
+   end_if;
+
+//observateur 2
+//azote
+
+ if data10 > real(100) +REAL(10)
+      then data31 := true;
+         tstart(impuls_Azot_obs2);
+         tstop(pause_oxy_obs2);
+         pause_oxy_obs2 := t#0s;
+         impuls_Oxy_obs2 :=t#0s;
+         if impuls_Azot_obs2 >= t#500ms
+            then data31 := false;
+               tstop(impuls_Azot_obs2);
+               tstart(pause_Azot_obs2);
+               if pause_Azot_obs2 >= t#30s
+                  then tstop(pause_Azot_obs2);
+                     pause_Azot_obs2 :=t#0s;
+                     impuls_Azot_obs2 :=t#0s;
+               end_if;
+         end_if;
+   else data31 := false;
+   tstop(pause_Azot_obs2);
+   tstop(impuls_Azot_obs2);
+   pause_Azot_obs2 :=t#0s;
+   impuls_Azot_obs2 :=t#0s;
+   end_if;
+
+// Oxygène
+ if data10 < real(100) +REAL(4)
+      then  data34 := true;
+          tstart(impuls_Oxy_obs2);
+          tstop(pause_Azot_obs2);
+          pause_Azot_obs2 :=t#0s;
+          impuls_Azot_obs2 :=t#0s;
+          if impuls_Oxy_obs2 >= t#300ms
+            then data34 := false;
+                tstop(impuls_Oxy_obs2);
+                tstart(pause_Oxy_obs2);
+                if pause_Oxy_obs2 >= t#60s
+                   then tstop(pause_Oxy_obs2);      
+                       pause_Oxy_obs2 :=t#0s;
+                       impuls_Oxy_obs2 :=t#0s;    
+                end_if;         
+           end_if;
+   else data34 := false;
+   tstop(impuls_Oxy_obs2);
+   tstop(pause_Oxy_obs2);    
+   pause_Oxy_obs2 :=t#0s;    
+   impuls_Oxy_obs2 :=t#0s;             
+   end_if;
+
+end_if;
+
+////////////////////////////////////////////////////////////////
+//                              Fin de stabulation           //                                                                    
+//////////////////////////////////////////////////////////////
+
+
+
+////////////////////////////////////////////////////////////////
+//                            début hypoxie                  //                                                                    
+//////////////////////////////////////////////////////////////
+
+//bouton sur position Hypoxie
+
+if data20 = true and data21 =false
+then
+
+//début éxpé
+
+
+////////////////////////////////////////////////////////////////
+//         Régulation stabulation challenge                  //                                                                    
+//////////////////////////////////////////////////////////////
+
+
+//observateur 1
+//Oxygène
+if data1 < real(100) +real(-2)
+then data36 :=true;
+tstart(impulse_O_Norm_1);
+     if impulse_O_Norm_1>t#300ms
+     then data36 := false;
+          tstop(impulse_O_Norm_1);
+          tstart(pause_O_Norm_1);
+          if pause_O_Norm_1 >= t#60s
+             then tstop(pause_O_Norm_1);
+                  pause_O_Norm_1 := t#0s;
+                  impulse_O_Norm_1 := t#0s;
+          end_if;
+      end_if;
+else data36 := false;
+tstop(impulse_O_Norm_1);
+tstop(pause_O_Norm_1);
+pause_O_Norm_1 := t#0s;
+impulse_O_Norm_1 := t#0s;
+end_if;
+
+//Azote
+if data1 > real(100) +real(4) 
+   then data37 := true;
+        tstart(impulse_N_Norm_1);
+        if impulse_N_Norm_1 >= t#500ms
+           then data37 := false;
+                tstop(impulse_N_Norm_1);
+                tstart(pause_N_Norm_1);
+                if pause_N_Norm_1 >= t#30s
+                   then tstop(pause_N_Norm_1);
+                        pause_N_Norm_1 :=t#0s;
+                        impulse_N_Norm_1 :=t#0s;
+                end_if;
+       end_if;
+else data37 := false;
+tstop(pause_N_Norm_1);
+tstop(impulse_N_Norm_1);
+pause_N_Norm_1 :=t#0s;
+impulse_N_Norm_1 :=t#0s;
+end_if;
+
+
+// observateur 2 
+//Oxygène
+
+if data5 < real(100) +real(4)  
+then data35 :=true;
+tstart(impulse_O_Norm_2);
+     if impulse_O_Norm_2>t#300ms
+     then data35 := false;
+          tstop(impulse_O_Norm_2);
+          tstart(pause_O_Norm_2);
+          if pause_O_Norm_2 >= t#60s
+             then tstop(pause_O_Norm_2);
+                  pause_O_Norm_2 := t#0s;
+                  impulse_O_Norm_2 := t#0s;
+          end_if;
+      end_if;
+else data35 := false;
+tstop(impulse_O_Norm_2);
+tstop(pause_O_Norm_2);
+pause_O_Norm_2 := t#0s;
+impulse_O_Norm_2 := t#0s;
+end_if;
+
+
+//Azote 
+
+if data5 > real(100) +real(10) 
+   then data38 := true;
+        tstart(impulse_N_Norm_2);
+        if impulse_N_Norm_2 >= t#500ms
+           then data38 := false;
+                tstop(impulse_N_Norm_2);
+                tstart(pause_N_Norm_2);
+                if pause_N_Norm_2 >= t#30s
+                   then tstop(pause_N_Norm_2);
+                        pause_N_Norm_2 :=t#0s;
+                        impulse_N_Norm_2 :=t#0s;
+                end_if;
+       end_if;
+else data38 := false;
+tstop(pause_N_Norm_2);
+tstop(impulse_N_Norm_2);
+pause_N_Norm_2 :=t#0s;
+impulse_N_Norm_2 :=t#0s;
+end_if;
+
+
+
+
+/////////////////////////////////////////////////////////////////////////
+//               lancement des timer de comptage de la manip          //
+///////////////////////////////////////////////////////////////////////
+
+   data50 := trunc(real(timer)/real(60000));
+   data51 := trunc(real(secondes)/real(1000));
+   if secondes >= t#60s
+   then secondes := t#0s;
+   end_if;
+   tstart(timer);
+   tstart(secondes);
+   else tstop(timer);
+
+   end_if;
+
+
+/////////////////////////////////////////////////////////////////////////
+//                     variation des consignes                        //
+///////////////////////////////////////////////////////////////////////
+
+
+
+   //consignes 100%
+   
+if timer >=t#0m and timer <t#16m                                   // <-- Modifier les chiffre en gris pour modifier la tempo 
+then data108 := real(100);
+
+   //observateur 1
+//Azote
+
+   if data9 > data108 +REAL(4)                           
+      then data30 := true;
+         tstart(impuls_Azot_obs1);
+         tstop(pause_oxy_obs1);
+         pause_oxy_obs1 := t#0s;
+         impuls_Oxy_obs1 :=t#0s;
+         if impuls_Azot_obs1 >= t#500ms                        
+            then data30 := false;
+               tstop(impuls_Azot_obs1);
+               tstart(pause_Azot_obs1);
+               if pause_Azot_obs1 >= t#30s                    
+                  then tstop(pause_Azot_obs1);
+                     pause_Azot_obs1 :=t#0s;
+                     impuls_Azot_obs1 :=t#0s;
+               end_if;
+         end_if;
+   else data30 := false;
+   tstop(pause_Azot_obs1);
+   tstop(impuls_Azot_obs1);
+   pause_Azot_obs1 :=t#0s;
+   impuls_Azot_obs1 :=t#0s;
+   end_if;
+
+
+
+//Oxygène
+
+   if data9 < data108 +REAL(-2)                               
+      then  data32 := true;
+          tstart(impuls_Oxy_obs1);
+          tstop(pause_Azot_obs1);
+          pause_Azot_obs1 :=t#0s;
+          impuls_Azot_obs1 :=t#0s;
+          if impuls_Oxy_obs1 >= t#300ms                               
+            then  data32 := false;
+                 tstop(impuls_Oxy_obs1);
+                 tstart(pause_Oxy_obs1);
+                 if pause_Oxy_obs1 >= t#60s                            
+                   then tstop(pause_Oxy_obs1);
+                       pause_Oxy_obs1 :=t#0s;
+                       impuls_Oxy_obs1 :=t#0s;
+                 end_if;
+          end_if;
+   else data32 := false;
+   tstop(impuls_Oxy_obs1);
+   tstop(pause_Oxy_obs1);    
+   pause_Oxy_obs1 :=t#0s;    
+   impuls_Oxy_obs1 :=t#0s;          
+   end_if;
+
+
+
+//Observateur 2
+
+//Azote
+
+   if data10 > data108 +REAL(10)                                   // <-- Modifier le chiffre entre () pour modifier la consigne
+      then data31 := true;
+         tstart(impuls_Azot_obs2);
+         tstop(pause_oxy_obs2);
+         pause_oxy_obs2 := t#0s;
+         impuls_Oxy_obs2 :=t#0s;
+         if impuls_Azot_obs2 >= t#500ms                             
+            then data31 := false;
+               tstop(impuls_Azot_obs2);
+               tstart(pause_Azot_obs2);
+               if pause_Azot_obs2 >= t#30s                           
+                  then tstop(pause_Azot_obs2);
+                     pause_Azot_obs2 :=t#0s;
+                     impuls_Azot_obs2 :=t#0s;
+               end_if;
+         end_if;
+   else data31 := false;
+   tstop(pause_Azot_obs2);
+   tstop(impuls_Azot_obs2);
+   pause_Azot_obs2 :=t#0s;
+   impuls_Azot_obs2 :=t#0s;
+   end_if;
+
+//Oxygène
+
+   if data10 < data108 +REAL(4)                                   // <-- Modifier le chiffre entre () pour modifier la consigne
+      then  data34 := true;
+          tstart(impuls_Oxy_obs2);
+          tstop(pause_Azot_obs2);
+          pause_Azot_obs2 :=t#0s;
+          impuls_Azot_obs2 :=t#0s;
+          if impuls_Oxy_obs2 >= t#300ms                              
+            then data34 := false;
+                tstop(impuls_Oxy_obs2);
+                tstart(pause_Oxy_obs2);
+                if pause_Oxy_obs2 >= t#60s                           
+                   then tstop(pause_Oxy_obs2);      
+                       pause_Oxy_obs2 :=t#0s;
+                       impuls_Oxy_obs2 :=t#0s;    
+                end_if;         
+           end_if;
+   else data34 := false;
+   tstop(impuls_Oxy_obs2);
+   tstop(pause_Oxy_obs2);    
+   pause_Oxy_obs2 :=t#0s;    
+   impuls_Oxy_obs2 :=t#0s;             
+   end_if;
+   end_if;
+
+
+/////////////////////////////////////////////////////////////////////////
+//              a t=16 consignes à 90%                                //
+///////////////////////////////////////////////////////////////////////
+
+
+
+
+//descente 
+
+   if timer>t#16m and timer<=t#26m                                   // <-- Modifier les chiffre en gris pour modifier la tempo 
+   then data108 :=  real(90);
+
+//observateur 1
+
+//Azote
+
+   if data9 > data108 +REAL(3)                              // <-- Modifier le chiffre entre () pour modifier la consigne
+      then data30 := true;
+         tstart(impuls_Azot_obs1);
+         tstop(pause_oxy_obs1);
+         pause_oxy_obs1 := t#0s;
+         impuls_Oxy_obs1 :=t#0s;
+         if impuls_Azot_obs1 >= t#500ms                                
+            then data30 := false;
+               tstop(impuls_Azot_obs1);
+               tstart(pause_Azot_obs1);
+               if pause_Azot_obs1 >= t#30s                              
+                  then tstop(pause_Azot_obs1);
+                     pause_Azot_obs1 :=t#0s;
+                     impuls_Azot_obs1 :=t#0s;
+               end_if;
+         end_if;
+   else data30 := false;
+   tstop(pause_Azot_obs1);
+   tstop(impuls_Azot_obs1);
+   pause_Azot_obs1 :=t#0s;
+   impuls_Azot_obs1 :=t#0s;
+   end_if;
+
+//Oxygène
+
+   if data9 < data108 +REAL(-1)                                    // <-- Modifier le chiffre entre () pour modifier la consigne
+      then  data32 := true;
+          tstart(impuls_Oxy_obs1);
+          tstop(pause_Azot_obs1);
+          pause_Azot_obs1 :=t#0s;
+          impuls_Azot_obs1 :=t#0s;
+          if impuls_Oxy_obs1 >= t#500ms                              
+            then  data32 := false;
+                 tstop(impuls_Oxy_obs1);
+                 tstart(pause_Oxy_obs1);
+                 if pause_Oxy_obs1 >= t#60s                           
+                   then tstop(pause_Oxy_obs1);
+                       pause_Oxy_obs1 :=t#0s;
+                       impuls_Oxy_obs1 :=t#0s;
+                 end_if;
+          end_if;
+   else data32 := false;
+   tstop(impuls_Oxy_obs1);
+   tstop(pause_Oxy_obs1);    
+   pause_Oxy_obs1 :=t#0s;    
+   impuls_Oxy_obs1 :=t#0s;          
+   end_if;
+
+//Observateur 2
+//Azote
+
+   if data10 > data108 +REAL(9)                                   // <-- Modifier le chiffre entre () pour modifier la consigne
+      then data31 := true;
+         tstart(impuls_Azot_obs2);
+         tstop(pause_oxy_obs2);
+         pause_oxy_obs2 := t#0s;
+         impuls_Oxy_obs2 :=t#0s;
+         if impuls_Azot_obs2 >= t#500ms                              
+            then data31 := false;
+               tstop(impuls_Azot_obs2);
+               tstart(pause_Azot_obs2);
+               if pause_Azot_obs2 >= t#30s                           
+                  then tstop(pause_Azot_obs2);
+                     pause_Azot_obs2 :=t#0s;
+                     impuls_Azot_obs2 :=t#0s;
+               end_if;
+         end_if;
+   else data31 := false;
+   tstop(pause_Azot_obs2);
+   tstop(impuls_Azot_obs2);
+   pause_Azot_obs2 :=t#0s;
+   impuls_Azot_obs2 :=t#0s;
+   end_if;
+
+// Oxygène
+
+   if data10 < data108 +REAL(5)                                   // <-- Modifier le chiffre entre () pour modifier la consigne
+      then  data34 := true;
+          tstart(impuls_Oxy_obs2);
+          tstop(pause_Azot_obs2);
+          pause_Azot_obs2 :=t#0s;
+          impuls_Azot_obs2 :=t#0s;
+          if impuls_Oxy_obs2 >= t#500ms                         
+            then data34 := false;
+                tstop(impuls_Oxy_obs2);
+                tstart(pause_Oxy_obs2);
+                if pause_Oxy_obs2 >= t#60s                       
+                   then tstop(pause_Oxy_obs2);      
+                       pause_Oxy_obs2 :=t#0s;
+                       impuls_Oxy_obs2 :=t#0s;    
+                end_if;         
+           end_if;
+   else data34 := false;
+   tstop(impuls_Oxy_obs2);
+   tstop(pause_Oxy_obs2);    
+   pause_Oxy_obs2 :=t#0s;    
+   impuls_Oxy_obs2 :=t#0s;             
+   end_if;
+   end_if;
+
+
+
+//palier
+
+   if timer>t#26m and timer<=t#42m                                   // <-- Modifier les chiffre en gris pour modifier la tempo 
+   then data108 :=  real(90);
+
+//observateur 1
+
+//Azote
+
+   if data9 > data108 +REAL(3)                              // <-- Modifier le chiffre entre () pour modifier la consigne
+      then data30 := true;
+         tstart(impuls_Azot_obs1);
+         tstop(pause_oxy_obs1);
+         pause_oxy_obs1 := t#0s;
+         impuls_Oxy_obs1 :=t#0s;
+         if impuls_Azot_obs1 >= t#500ms                             
+            then data30 := false;
+               tstop(impuls_Azot_obs1);
+               tstart(pause_Azot_obs1);
+               if pause_Azot_obs1 >= t#25s                          
+                  then tstop(pause_Azot_obs1);
+                     pause_Azot_obs1 :=t#0s;
+                     impuls_Azot_obs1 :=t#0s;
+               end_if;
+         end_if;
+   else data30 := false;
+   tstop(pause_Azot_obs1);
+   tstop(impuls_Azot_obs1);
+   pause_Azot_obs1 :=t#0s;
+   impuls_Azot_obs1 :=t#0s;
+   end_if;
+
+//Oxygène
+
+   if data9 < data108 +REAL(-1)                                    // <-- Modifier le chiffre entre () pour modifier la consigne
+      then  data32 := true;
+          tstart(impuls_Oxy_obs1);
+          tstop(pause_Azot_obs1);
+          pause_Azot_obs1 :=t#0s;
+          impuls_Azot_obs1 :=t#0s;
+          if impuls_Oxy_obs1 >= t#500ms                               
+            then  data32 := false;
+                 tstop(impuls_Oxy_obs1);
+                 tstart(pause_Oxy_obs1);
+                 if pause_Oxy_obs1 >= t#60s                          
+                   then tstop(pause_Oxy_obs1);
+                       pause_Oxy_obs1 :=t#0s;
+                       impuls_Oxy_obs1 :=t#0s;
+                 end_if;
+          end_if;
+   else data32 := false;
+   tstop(impuls_Oxy_obs1);
+   tstop(pause_Oxy_obs1);    
+   pause_Oxy_obs1 :=t#0s;    
+   impuls_Oxy_obs1 :=t#0s;          
+   end_if;
+
+//Observateur 2
+//Azote
+
+   if data10 > data108 +REAL(9)                                   // <-- Modifier le chiffre entre () pour modifier la consigne
+      then data31 := true;
+         tstart(impuls_Azot_obs2);
+         tstop(pause_oxy_obs2);
+         pause_oxy_obs2 := t#0s;
+         impuls_Oxy_obs2 :=t#0s;
+         if impuls_Azot_obs2 >= t#500ms                               
+            then data31 := false;
+               tstop(impuls_Azot_obs2);
+               tstart(pause_Azot_obs2);
+               if pause_Azot_obs2 >= t#25s                            
+                  then tstop(pause_Azot_obs2);
+                     pause_Azot_obs2 :=t#0s;
+                     impuls_Azot_obs2 :=t#0s;
+               end_if;
+         end_if;
+   else data31 := false;
+   tstop(pause_Azot_obs2);
+   tstop(impuls_Azot_obs2);
+   pause_Azot_obs2 :=t#0s;
+   impuls_Azot_obs2 :=t#0s;
+   end_if;
+
+// Oxygène
+
+   if data10 < data108 -REAL(5)                                   // <-- Modifier le chiffre entre () pour modifier la consigne
+      then  data34 := true;
+          tstart(impuls_Oxy_obs2);
+          tstop(pause_Azot_obs2);
+          pause_Azot_obs2 :=t#0s;
+          impuls_Azot_obs2 :=t#0s;
+          if impuls_Oxy_obs2 >= t#500ms                              
+            then data34 := false;
+                tstop(impuls_Oxy_obs2);
+                tstart(pause_Oxy_obs2);
+                if pause_Oxy_obs2 >= t#60s                         
+                   then tstop(pause_Oxy_obs2);      
+                       pause_Oxy_obs2 :=t#0s;
+                       impuls_Oxy_obs2 :=t#0s;    
+                end_if;         
+           end_if;
+   else data34 := false;
+   tstop(impuls_Oxy_obs2);
+   tstop(pause_Oxy_obs2);    
+   pause_Oxy_obs2 :=t#0s;    
+   impuls_Oxy_obs2 :=t#0s;             
+   end_if;
+   end_if;
+
+
+
+/////////////////////////////////////////////////////////////////////////
+//              a t=45 consignes à 80%                                //
+///////////////////////////////////////////////////////////////////////
+
+//descente 
+
+   if timer>t#42m and timer<=t#52m                                   // <-- Modifier les chiffre en gris pour modifier la tempo 
+   then data108 := real(80);
+
+//Observateur 1
+//Azote
+
+   if data9 > data108 +REAL(2)                            
+      then data30 := true;
+         tstart(impuls_Azot_obs1);
+         tstop(pause_oxy_obs1);
+         pause_oxy_obs1 := t#0s;
+         impuls_Oxy_obs1 :=t#0s;
+         if impuls_Azot_obs1 >= t#500ms                            
+            then data30 := false;
+               tstop(impuls_Azot_obs1);
+               tstart(pause_Azot_obs1);
+               if pause_Azot_obs1 >= t#30s                        
+                  then tstop(pause_Azot_obs1);
+                     pause_Azot_obs1 :=t#0s;
+                     impuls_Azot_obs1 :=t#0s;
+               end_if;
+         end_if;
+   else data30 := false;
+   tstop(pause_Azot_obs1);
+   tstop(impuls_Azot_obs1);
+   pause_Azot_obs1 :=t#0s;
+   impuls_Azot_obs1 :=t#0s;
+   end_if;
+
+//Oxygène 
+  if data9 < data108 +REAL(-2)                              
+      then  data32 := true;
+          tstart(impuls_Oxy_obs1);
+          tstop(pause_Azot_obs1);
+          pause_Azot_obs1 :=t#0s;
+          impuls_Azot_obs1 :=t#0s;
+          if impuls_Oxy_obs1 >= t#500ms                        
+            then  data32 := false;
+                 tstop(impuls_Oxy_obs1);
+                 tstart(pause_Oxy_obs1);
+                 if pause_Oxy_obs1 >= t#60s                 
+                   then tstop(pause_Oxy_obs1);
+                       pause_Oxy_obs1 :=t#0s;
+                       impuls_Oxy_obs1 :=t#0s;
+                 end_if;
+          end_if;
+   else data32 := false;
+   tstop(impuls_Oxy_obs1);
+   tstop(pause_Oxy_obs1);    
+   pause_Oxy_obs1 :=t#0s;    
+   impuls_Oxy_obs1 :=t#0s;          
+   end_if;
+
+//Observateur 2 
+//Azote
+
+   if data10 > data108 +REAL(7)                               
+      then data31 := true;
+         tstart(impuls_Azot_obs2);
+         tstop(pause_oxy_obs2);
+         pause_oxy_obs2 := t#0s;
+         impuls_Oxy_obs2 :=t#0s;
+         if impuls_Azot_obs2 >= t#500ms                               
+            then data31 := false;
+               tstop(impuls_Azot_obs2);
+               tstart(pause_Azot_obs2);
+               if pause_Azot_obs2 >= t#30s                               
+                  then tstop(pause_Azot_obs2);
+                     pause_Azot_obs2 :=t#0s;
+                     impuls_Azot_obs2 :=t#0s;
+               end_if;
+         end_if;
+   else data31 := false;
+   tstop(pause_Azot_obs2);
+   tstop(impuls_Azot_obs2);
+   pause_Azot_obs2 :=t#0s;
+   impuls_Azot_obs2 :=t#0s;
+   end_if;
+
+//Oxygène
+
+   if data10 < data108 +REAL(3)                              
+      then  data34 := true;
+          tstart(impuls_Oxy_obs2);
+          tstop(pause_Azot_obs2);
+          pause_Azot_obs2 :=t#0s;
+          impuls_Azot_obs2 :=t#0s;
+          if impuls_Oxy_obs2 >= t#500ms                               
+            then data34 := false;
+                tstop(impuls_Oxy_obs2);
+                tstart(pause_Oxy_obs2);
+                if pause_Oxy_obs2 >= t#60s                            
+                   then tstop(pause_Oxy_obs2);      
+                       pause_Oxy_obs2 :=t#0s;
+                       impuls_Oxy_obs2 :=t#0s;    
+                end_if;         
+           end_if;
+   else data34 := false;
+   tstop(impuls_Oxy_obs2);
+   tstop(pause_Oxy_obs2);    
+   pause_Oxy_obs2 :=t#0s;    
+   impuls_Oxy_obs2 :=t#0s;             
+   end_if;
+   end_if;
+
+//palier
+
+   if timer>t#52m and timer<=t#68m                                   // <-- Modifier les chiffre en gris pour modifier la tempo 
+   then data108 := real(80);
+
+//Observateur 1
+//Azote
+
+   if data9 > data108 +REAL(3)                             
+      then data30 := true;
+         tstart(impuls_Azot_obs1);
+         tstop(pause_oxy_obs1);
+         pause_oxy_obs1 := t#0s;
+         impuls_Oxy_obs1 :=t#0s;
+         if impuls_Azot_obs1 >= t#500ms                                
+            then data30 := false;
+               tstop(impuls_Azot_obs1);
+               tstart(pause_Azot_obs1);
+               if pause_Azot_obs1 >= t#25s                             
+                  then tstop(pause_Azot_obs1);
+                     pause_Azot_obs1 :=t#0s;
+                     impuls_Azot_obs1 :=t#0s;
+               end_if;
+         end_if;
+   else data30 := false;
+   tstop(pause_Azot_obs1);
+   tstop(impuls_Azot_obs1);
+   pause_Azot_obs1 :=t#0s;
+   impuls_Azot_obs1 :=t#0s;
+   end_if;
+
+//Oxygène 
+  if data9 < data108 +REAL(-1)                                
+      then  data32 := true;
+          tstart(impuls_Oxy_obs1);
+          tstop(pause_Azot_obs1);
+          pause_Azot_obs1 :=t#0s;
+          impuls_Azot_obs1 :=t#0s;
+          if impuls_Oxy_obs1 >= t#500ms                                
+            then  data32 := false;
+                 tstop(impuls_Oxy_obs1);
+                 tstart(pause_Oxy_obs1);
+                 if pause_Oxy_obs1 >= t#60s                          
+                   then tstop(pause_Oxy_obs1);
+                       pause_Oxy_obs1 :=t#0s;
+                       impuls_Oxy_obs1 :=t#0s;
+                 end_if;
+          end_if;
+   else data32 := false;
+   tstop(impuls_Oxy_obs1);
+   tstop(pause_Oxy_obs1);    
+   pause_Oxy_obs1 :=t#0s;    
+   impuls_Oxy_obs1 :=t#0s;          
+   end_if;
+
+//Observateur 2 
+//Azote
+ 
+   if data10 > data108 +REAL(8)                            
+      then data31 := true;
+         tstart(impuls_Azot_obs2);
+         tstop(pause_oxy_obs2);
+         pause_oxy_obs2 := t#0s;
+         impuls_Oxy_obs2 :=t#0s;
+         if impuls_Azot_obs2 >= t#500ms                              
+            then data31 := false;
+               tstop(impuls_Azot_obs2);
+               tstart(pause_Azot_obs2);
+               if pause_Azot_obs2 >= t#25s                           
+                  then tstop(pause_Azot_obs2);
+                     pause_Azot_obs2 :=t#0s;
+                     impuls_Azot_obs2 :=t#0s;
+               end_if;
+         end_if;
+   else data31 := false;
+   tstop(pause_Azot_obs2);
+   tstop(impuls_Azot_obs2);
+   pause_Azot_obs2 :=t#0s;
+   impuls_Azot_obs2 :=t#0s;
+   end_if;
+
+//Oxygène
+
+   if data10 < data108 +REAL(4)                                
+      then  data34 := true;
+          tstart(impuls_Oxy_obs2);
+          tstop(pause_Azot_obs2);
+          pause_Azot_obs2 :=t#0s;
+          impuls_Azot_obs2 :=t#0s;
+          if impuls_Oxy_obs2 >= t#500ms                              
+            then data34 := false;
+                tstop(impuls_Oxy_obs2);
+                tstart(pause_Oxy_obs2);
+                if pause_Oxy_obs2 >= t#60s                       
+                   then tstop(pause_Oxy_obs2);      
+                       pause_Oxy_obs2 :=t#0s;
+                       impuls_Oxy_obs2 :=t#0s;    
+                end_if;         
+           end_if;
+   else data34 := false;
+   tstop(impuls_Oxy_obs2);
+   tstop(pause_Oxy_obs2);    
+   pause_Oxy_obs2 :=t#0s;    
+   impuls_Oxy_obs2 :=t#0s;             
+   end_if;
+   end_if;
+
+
+/////////////////////////////////////////////////////////////////////////
+//              consignes à 70%                                       //
+///////////////////////////////////////////////////////////////////////
+
+
+//descente
+
+
+   if timer>t#68m and timer<=t#78m                                   // <-- Modifier les chiffre en gris pour modifier la tempo 
+   then data108 :=  real(70);
+//Observateur 1
+//Azote
+
+   if data9 > data108 +REAL(1.5)                            
+      then data30 := true;
+         tstart(impuls_Azot_obs1);
+         tstop(pause_oxy_obs1);
+         pause_oxy_obs1 := t#0s;
+         impuls_Oxy_obs1 :=t#0s;
+         if impuls_Azot_obs1 >= t#500ms                            
+            then data30 := false;
+               tstop(impuls_Azot_obs1);
+               tstart(pause_Azot_obs1);
+               if pause_Azot_obs1 >= t#25s                     
+                  then tstop(pause_Azot_obs1);
+                     pause_Azot_obs1 :=t#0s;
+                     impuls_Azot_obs1 :=t#0s;
+               end_if;
+         end_if;
+   else data30 := false;
+   tstop(pause_Azot_obs1);
+   tstop(impuls_Azot_obs1);
+   pause_Azot_obs1 :=t#0s;
+   impuls_Azot_obs1 :=t#0s;
+   end_if;
+
+//Oxygène
+
+   if data9 < data108 +REAL(-3.5)                                
+      then  data32 := true;
+          tstart(impuls_Oxy_obs1);
+          tstop(pause_Azot_obs1);
+          pause_Azot_obs1 :=t#0s;
+          impuls_Azot_obs1 :=t#0s;
+          if impuls_Oxy_obs1 >= t#500ms                           
+            then  data32 := false;
+                 tstop(impuls_Oxy_obs1);
+                 tstart(pause_Oxy_obs1);
+                 if pause_Oxy_obs1 >= t#60s                             
+                   then tstop(pause_Oxy_obs1);
+                       pause_Oxy_obs1 :=t#0s;
+                       impuls_Oxy_obs1 :=t#0s;
+                 end_if;
+          end_if;
+   else data32 := false;
+   tstop(impuls_Oxy_obs1);
+   tstop(pause_Oxy_obs1);    
+   pause_Oxy_obs1 :=t#0s;    
+   impuls_Oxy_obs1 :=t#0s;          
+   end_if;
+
+//Obervateur 2
+//Azote
+
+   if data10 > data108 +REAL(6.5)                                
+      then data31 := true;
+         tstart(impuls_Azot_obs2);
+         tstop(pause_oxy_obs2);
+         pause_oxy_obs2 := t#0s;
+         impuls_Oxy_obs2 :=t#0s;
+         if impuls_Azot_obs2 >= t#500ms                        
+            then data31 := false;
+               tstop(impuls_Azot_obs2);
+               tstart(pause_Azot_obs2);
+               if pause_Azot_obs2 >= t#25s                  
+                  then tstop(pause_Azot_obs2);
+                     pause_Azot_obs2 :=t#0s;
+                     impuls_Azot_obs2 :=t#0s;
+               end_if;
+         end_if;
+   else data31 := false;
+   tstop(pause_Azot_obs2);
+   tstop(impuls_Azot_obs2);
+   pause_Azot_obs2 :=t#0s;
+   impuls_Azot_obs2 :=t#0s;
+   end_if;
+
+//Oxygène
+
+   if data10 < data108 +REAL(1.5)                             
+      then  data34 := true;
+          tstart(impuls_Oxy_obs2);
+          tstop(pause_Azot_obs2);
+          pause_Azot_obs2 :=t#0s;
+          impuls_Azot_obs2 :=t#0s;
+          if impuls_Oxy_obs2 >= t#500ms                          
+            then data34 := false;
+                tstop(impuls_Oxy_obs2);
+                tstart(pause_Oxy_obs2);
+                if pause_Oxy_obs2 >= t#60s                    
+                   then tstop(pause_Oxy_obs2);      
+                       pause_Oxy_obs2 :=t#0s;
+                       impuls_Oxy_obs2 :=t#0s;    
+                end_if;         
+           end_if;
+   else data34 := false;
+   tstop(impuls_Oxy_obs2);
+   tstop(pause_Oxy_obs2);    
+   pause_Oxy_obs2 :=t#0s;    
+   impuls_Oxy_obs2 :=t#0s;             
+   end_if;
+   end_if;
+
+
+//palier
+
+ if timer>t#78m and timer<=t#94m                                   // <-- Modifier les chiffre en gris pour modifier la tempo 
+   then data108 :=  real(70);
+
+
+//Observateur 1
+//Azote
+
+   if data9 > data108 +REAL(1.5)                            
+      then data30 := true;
+         tstart(impuls_Azot_obs1);
+         tstop(pause_oxy_obs1);
+         pause_oxy_obs1 := t#0s;
+         impuls_Oxy_obs1 :=t#0s;
+         if impuls_Azot_obs1 >= t#500ms                        
+            then data30 := false;
+               tstop(impuls_Azot_obs1);
+               tstart(pause_Azot_obs1);
+               if pause_Azot_obs1 >= t#20s                          
+                  then tstop(pause_Azot_obs1);
+                     pause_Azot_obs1 :=t#0s;
+                     impuls_Azot_obs1 :=t#0s;
+               end_if;
+         end_if;
+   else data30 := false;
+   tstop(pause_Azot_obs1);
+   tstop(impuls_Azot_obs1);
+   pause_Azot_obs1 :=t#0s;
+   impuls_Azot_obs1 :=t#0s;
+   end_if;
+
+//Oxygène
+
+   if data9 < data108 +REAL(-2.5)                              
+      then  data32 := true;
+          tstart(impuls_Oxy_obs1);
+          tstop(pause_Azot_obs1);
+          pause_Azot_obs1 :=t#0s;
+          impuls_Azot_obs1 :=t#0s;
+          if impuls_Oxy_obs1 >= t#500ms                            
+            then  data32 := false;
+                 tstop(impuls_Oxy_obs1);
+                 tstart(pause_Oxy_obs1);
+                 if pause_Oxy_obs1 >= t#60s                     
+                   then tstop(pause_Oxy_obs1);
+                       pause_Oxy_obs1 :=t#0s;
+                       impuls_Oxy_obs1 :=t#0s;
+                 end_if;
+          end_if;
+   else data32 := false;
+   tstop(impuls_Oxy_obs1);
+   tstop(pause_Oxy_obs1);    
+   pause_Oxy_obs1 :=t#0s;    
+   impuls_Oxy_obs1 :=t#0s;          
+   end_if;
+
+//Obervateur 2
+//Azote
+
+   if data10 > data108 +REAL(6.5)                          
+      then data31 := true;
+         tstart(impuls_Azot_obs2);
+         tstop(pause_oxy_obs2);
+         pause_oxy_obs2 := t#0s;
+         impuls_Oxy_obs2 :=t#0s;
+         if impuls_Azot_obs2 >= t#500ms                  
+            then data31 := false;
+               tstop(impuls_Azot_obs2);
+               tstart(pause_Azot_obs2);
+               if pause_Azot_obs2 >= t#20s             
+                  then tstop(pause_Azot_obs2);
+                     pause_Azot_obs2 :=t#0s;
+                     impuls_Azot_obs2 :=t#0s;
+               end_if;
+         end_if;
+   else data31 := false;
+   tstop(pause_Azot_obs2);
+   tstop(impuls_Azot_obs2);
+   pause_Azot_obs2 :=t#0s;
+   impuls_Azot_obs2 :=t#0s;
+   end_if;
+
+//Oxygène
+
+   if data10 < data108 +REAL(2.5)                     
+      then  data34 := true;
+          tstart(impuls_Oxy_obs2);
+          tstop(pause_Azot_obs2);
+          pause_Azot_obs2 :=t#0s;
+          impuls_Azot_obs2 :=t#0s;
+          if impuls_Oxy_obs2 >= t#500ms                      
+            then data34 := false;
+                tstop(impuls_Oxy_obs2);
+                tstart(pause_Oxy_obs2);
+                if pause_Oxy_obs2 >= t#60s                  
+                   then tstop(pause_Oxy_obs2);      
+                       pause_Oxy_obs2 :=t#0s;
+                       impuls_Oxy_obs2 :=t#0s;    
+                end_if;         
+           end_if;
+   else data34 := false;
+   tstop(impuls_Oxy_obs2);
+   tstop(pause_Oxy_obs2);    
+   pause_Oxy_obs2 :=t#0s;    
+   impuls_Oxy_obs2 :=t#0s;             
+   end_if;
+   end_if;
+
+
+/////////////////////////////////////////////////////////////////////////
+//           consignes à 60%                                          //
+///////////////////////////////////////////////////////////////////////
+
+
+//descente 
+
+
+   if timer>t#94m and timer<=t#104m                                   // <-- Modifier les chiffre en gris pour modifier la tempo 
+   then data108 :=  real(60);
+
+//Observateur 1
+//Azote
+
+   if data9 > data108 +REAL(0.5)                 
+      then data30 := true;
+         tstart(impuls_Azot_obs1);
+         tstop(pause_oxy_obs1);
+         pause_oxy_obs1 := t#0s;
+         impuls_Oxy_obs1 :=t#0s;
+         if impuls_Azot_obs1 >= t#500ms               
+            then data30 := false;
+               tstop(impuls_Azot_obs1);
+               tstart(pause_Azot_obs1);
+               if pause_Azot_obs1 >= t#20s                   
+                  then tstop(pause_Azot_obs1);
+                     pause_Azot_obs1 :=t#0s;
+                     impuls_Azot_obs1 :=t#0s;
+               end_if;
+         end_if;
+   else data30 := false;
+   tstop(pause_Azot_obs1);
+   tstop(impuls_Azot_obs1);
+   pause_Azot_obs1 :=t#0s;
+   impuls_Azot_obs1 :=t#0s;
+   end_if;
+
+//Oxygène
+
+   if data9 < data108 +REAL(-5)                         
+      then  data32 := true;
+          tstart(impuls_Oxy_obs1);
+          tstop(pause_Azot_obs1);
+          pause_Azot_obs1 :=t#0s;
+          impuls_Azot_obs1 :=t#0s;
+          if impuls_Oxy_obs1 >= t#500ms                        
+            then  data32 := false;
+                 tstop(impuls_Oxy_obs1);
+                 tstart(pause_Oxy_obs1);
+                 if pause_Oxy_obs1 >= t#60s                    
+                   then tstop(pause_Oxy_obs1);
+                       pause_Oxy_obs1 :=t#0s;
+                       impuls_Oxy_obs1 :=t#0s;
+                 end_if;
+          end_if;
+   else data32 := false;
+   tstop(impuls_Oxy_obs1);
+   tstop(pause_Oxy_obs1);    
+   pause_Oxy_obs1 :=t#0s;    
+   impuls_Oxy_obs1 :=t#0s;          
+   end_if;
+
+//Observateur 2
+//Azote
+
+   if data10 > data108 +REAL(6.5)                    
+      then data31 := true;
+         tstart(impuls_Azot_obs2);
+         tstop(pause_oxy_obs2);
+         pause_oxy_obs2 := t#0s;
+         impuls_Oxy_obs2 :=t#0s;
+         if impuls_Azot_obs2 >= t#500ms          
+            then data31 := false;
+               tstop(impuls_Azot_obs2);
+               tstart(pause_Azot_obs2);
+               if pause_Azot_obs2 >= t#20s
+                  then tstop(pause_Azot_obs2);
+                     pause_Azot_obs2 :=t#0s;
+                     impuls_Azot_obs2 :=t#0s;
+               end_if;
+         end_if;
+   else data31 := false;
+   tstop(pause_Azot_obs2);
+   tstop(impuls_Azot_obs2);
+   pause_Azot_obs2 :=t#0s;
+   impuls_Azot_obs2 :=t#0s;
+   end_if;
+
+//Oxygène
+
+   if data10 < data108 +REAL(1)                     
+      then  data34 := true;
+          tstart(impuls_Oxy_obs2);
+          tstop(pause_Azot_obs2);
+          pause_Azot_obs2 :=t#0s;
+          impuls_Azot_obs2 :=t#0s;
+          if impuls_Oxy_obs2 >= t#500ms                    
+            then data34 := false;
+                tstop(impuls_Oxy_obs2);
+                tstart(pause_Oxy_obs2);
+                if pause_Oxy_obs2 >= t#60s                  
+                   then tstop(pause_Oxy_obs2);      
+                       pause_Oxy_obs2 :=t#0s;
+                       impuls_Oxy_obs2 :=t#0s;    
+                end_if;         
+           end_if;
+   else data34 := false;
+   tstop(impuls_Oxy_obs2);
+   tstop(pause_Oxy_obs2);    
+   pause_Oxy_obs2 :=t#0s;    
+   impuls_Oxy_obs2 :=t#0s;             
+   end_if;
+   end_if;
+
+
+//palier
+
+
+
+   if timer>t#104m and timer<=t#120m                                   // <-- Modifier les chiffre en gris pour modifier la tempo 
+   then data108 :=  real(60);
+
+//Observateur 1
+//Azote
+
+   if data9 > data108 +REAL(0)                         
+      then data30 := true;
+         tstart(impuls_Azot_obs1);
+         tstop(pause_oxy_obs1);
+         pause_oxy_obs1 := t#0s;
+         impuls_Oxy_obs1 :=t#0s;
+         if impuls_Azot_obs1 >= t#500ms                 
+            then data30 := false;
+               tstop(impuls_Azot_obs1);
+               tstart(pause_Azot_obs1);
+               if pause_Azot_obs1 >= t#15s              
+                  then tstop(pause_Azot_obs1);
+                     pause_Azot_obs1 :=t#0s;
+                     impuls_Azot_obs1 :=t#0s;
+               end_if;
+         end_if;
+   else data30 := false;
+   tstop(pause_Azot_obs1);
+   tstop(impuls_Azot_obs1);
+   pause_Azot_obs1 :=t#0s;
+   impuls_Azot_obs1 :=t#0s;
+   end_if;
+
+//Oxygène
+
+   if data9 < data108 +REAL(-4)                             
+      then  data32 := true;
+          tstart(impuls_Oxy_obs1);
+          tstop(pause_Azot_obs1);
+          pause_Azot_obs1 :=t#0s;
+          impuls_Azot_obs1 :=t#0s;
+          if impuls_Oxy_obs1 >= t#500ms                       
+            then  data32 := false;
+                 tstop(impuls_Oxy_obs1);
+                 tstart(pause_Oxy_obs1);
+                 if pause_Oxy_obs1 >= t#60s                
+                   then tstop(pause_Oxy_obs1);
+                       pause_Oxy_obs1 :=t#0s;
+                       impuls_Oxy_obs1 :=t#0s;
+                 end_if;
+          end_if;
+   else data32 := false;
+   tstop(impuls_Oxy_obs1);
+   tstop(pause_Oxy_obs1);    
+   pause_Oxy_obs1 :=t#0s;    
+   impuls_Oxy_obs1 :=t#0s;          
+   end_if;
+
+//Observateur 2
+//Azote
+
+   if data10 > data108 +REAL(6)                        // <-- Modifier le chiffre entre () pour modifier la consigne de déclenchement de l azote
+      then data31 := true;
+         tstart(impuls_Azot_obs2);
+         tstop(pause_oxy_obs2);
+         pause_oxy_obs2 := t#0s;
+         impuls_Oxy_obs2 :=t#0s;
+         if impuls_Azot_obs2 >= t#500ms                        // <-- Modifier le chiffre en gris pour modifier la tempo d'ouverture de l'electrovanne
+            then data31 := false;
+               tstop(impuls_Azot_obs2);
+               tstart(pause_Azot_obs2);
+               if pause_Azot_obs2 >= t#15s
+                  then tstop(pause_Azot_obs2);
+                     pause_Azot_obs2 :=t#0s;
+                     impuls_Azot_obs2 :=t#0s;
+               end_if;
+         end_if;
+   else data31 := false;
+   tstop(pause_Azot_obs2);
+   tstop(impuls_Azot_obs2);
+   pause_Azot_obs2 :=t#0s;
+   impuls_Azot_obs2 :=t#0s;
+   end_if;
+
+//Oxygène
+
+   if data10 < data108 +REAL(2)                        
+      then  data34 := true;
+          tstart(impuls_Oxy_obs2);
+          tstop(pause_Azot_obs2);
+          pause_Azot_obs2 :=t#0s;
+          impuls_Azot_obs2 :=t#0s;
+          if impuls_Oxy_obs2 >= t#500ms                    
+            then data34 := false;
+                tstop(impuls_Oxy_obs2);
+                tstart(pause_Oxy_obs2);
+                if pause_Oxy_obs2 >= t#60s                    
+                   then tstop(pause_Oxy_obs2);      
+                       pause_Oxy_obs2 :=t#0s;
+                       impuls_Oxy_obs2 :=t#0s;    
+                end_if;         
+           end_if;
+   else data34 := false;
+   tstop(impuls_Oxy_obs2);
+   tstop(pause_Oxy_obs2);    
+   pause_Oxy_obs2 :=t#0s;    
+   impuls_Oxy_obs2 :=t#0s;             
+   end_if;
+   end_if;
+
+
+
+/////////////////////////////////////////////////////////////////////////
+//              a t=115 consignes à 50%                               //
+///////////////////////////////////////////////////////////////////////
+
+
+//descente
+
+   if timer>t#120m and timer<=t#130m                                   // <-- Modifier les chiffre en gris pour modifier la tempo 
+   then data108 :=  real(50);
+
+//Observateur 1
+//Azote
+
+
+ if data9 > data108 +REAL(0)                          
+      then data30 := true;
+         tstart(impuls_Azot_obs1);
+         tstop(pause_oxy_obs1);
+         pause_oxy_obs1 := t#0s;
+         impuls_Oxy_obs1 :=t#0s;
+         if impuls_Azot_obs1 >= t#500ms                  
+            then data30 := false;
+               tstop(impuls_Azot_obs1);
+               tstart(pause_Azot_obs1);
+               if pause_Azot_obs1 >= t#12s                 
+                  then tstop(pause_Azot_obs1);
+                     pause_Azot_obs1 :=t#0s;
+                     impuls_Azot_obs1 :=t#0s;
+               end_if;
+         end_if;
+   else data30 := false;
+   tstop(pause_Azot_obs1);
+   tstop(impuls_Azot_obs1);
+   pause_Azot_obs1 :=t#0s;
+   impuls_Azot_obs1 :=t#0s;
+   end_if;
+
+
+//Oxygène
+
+   if data9 < data108 +REAL(-6)                          
+      then  data32 := true;
+          tstart(impuls_Oxy_obs1);
+          tstop(pause_Azot_obs1);
+          pause_Azot_obs1 :=t#0s;
+          impuls_Azot_obs1 :=t#0s;
+          if impuls_Oxy_obs1 >= t#500ms                     
+            then  data32 := false;
+                 tstop(impuls_Oxy_obs1);
+                 tstart(pause_Oxy_obs1);
+                 if pause_Oxy_obs1 >= t#60s                  
+                   then tstop(pause_Oxy_obs1);
+                       pause_Oxy_obs1 :=t#0s;
+                       impuls_Oxy_obs1 :=t#0s;
+                 end_if;
+          end_if;
+   else data32 := false;
+   tstop(impuls_Oxy_obs1);
+   tstop(pause_Oxy_obs1);    
+   pause_Oxy_obs1 :=t#0s;    
+   impuls_Oxy_obs1 :=t#0s;          
+   end_if;
+
+//Observateur 2
+//azote
+
+   if data10 > data108 +REAL(5.5)                        // <-- Modifier le chiffre entre () pour modifier la consigne de déclenchement de l azote
+      then data31 := true;
+         tstart(impuls_Azot_obs2);
+         tstop(pause_oxy_obs2);
+         pause_oxy_obs2 := t#0s;
+         impuls_Oxy_obs2 :=t#0s;
+         if impuls_Azot_obs2 >= t#500ms                        // <-- Modifier le chiffre en gris pour modifier la tempo d'ouverture de l'electrovanne
+            then data31 := false;
+               tstop(impuls_Azot_obs2);
+               tstart(pause_Azot_obs2);
+               if pause_Azot_obs2 >= t#12s
+                  then tstop(pause_Azot_obs2);
+                     pause_Azot_obs2 :=t#0s;
+                     impuls_Azot_obs2 :=t#0s;
+               end_if;
+         end_if;
+   else data31 := false;
+   tstop(pause_Azot_obs2);
+   tstop(impuls_Azot_obs2);
+   pause_Azot_obs2 :=t#0s;
+   impuls_Azot_obs2 :=t#0s;
+   end_if;
+
+//Oxygène
+
+   if data10 < data108 +REAL(-0.5)                         
+      then  data34 := true;
+          tstart(impuls_Oxy_obs2);
+          tstop(pause_Azot_obs2);
+          pause_Azot_obs2 :=t#0s;
+          impuls_Azot_obs2 :=t#0s;
+          if impuls_Oxy_obs2 >= t#500ms                     
+            then data34 := false;
+                tstop(impuls_Oxy_obs2);
+                tstart(pause_Oxy_obs2);
+                if pause_Oxy_obs2 >= t#60s                  
+                   then tstop(pause_Oxy_obs2);      
+                       pause_Oxy_obs2 :=t#0s;
+                       impuls_Oxy_obs2 :=t#0s;    
+                end_if;         
+           end_if;
+   else data34 := false;
+   tstop(impuls_Oxy_obs2);
+   tstop(pause_Oxy_obs2);    
+   pause_Oxy_obs2 :=t#0s;    
+   impuls_Oxy_obs2 :=t#0s;             
+   end_if;
+   end_if;
+
+
+//palier
+
+   if timer>t#130m and timer<=t#146m                                   // <-- Modifier les chiffre en gris pour modifier la tempo 
+   then data108 :=  real(50);
+
+//Observateur 1
+//Azote
+
+
+ if data9 > data108 +REAL(0)                              // <-- Modifier les chiffre entre paranthèse pour modifer le seuil
+      then data30 := true;
+         tstart(impuls_Azot_obs1);
+         tstop(pause_oxy_obs1);
+         pause_oxy_obs1 := t#0s;
+         impuls_Oxy_obs1 :=t#0s;
+         if impuls_Azot_obs1 >= t#500ms                  
+            then data30 := false;
+               tstop(impuls_Azot_obs1);
+               tstart(pause_Azot_obs1);
+               if pause_Azot_obs1 >= t#10s                
+                  then tstop(pause_Azot_obs1);
+                     pause_Azot_obs1 :=t#0s;
+                     impuls_Azot_obs1 :=t#0s;
+               end_if;
+         end_if;
+   else data30 := false;
+   tstop(pause_Azot_obs1);
+   tstop(impuls_Azot_obs1);
+   pause_Azot_obs1 :=t#0s;
+   impuls_Azot_obs1 :=t#0s;
+   end_if;
+
+//Oxygène
+
+   if data9 < data108 +REAL(-4.5)                      
+      then  data32 := true;
+          tstart(impuls_Oxy_obs1);
+          tstop(pause_Azot_obs1);
+          pause_Azot_obs1 :=t#0s;
+          impuls_Azot_obs1 :=t#0s;
+          if impuls_Oxy_obs1 >= t#500ms                
+            then  data32 := false;
+                 tstop(impuls_Oxy_obs1);
+                 tstart(pause_Oxy_obs1);
+                 if pause_Oxy_obs1 >= t#60s                 
+                   then tstop(pause_Oxy_obs1);
+                       pause_Oxy_obs1 :=t#0s;
+                       impuls_Oxy_obs1 :=t#0s;
+                 end_if;
+          end_if;
+   else data32 := false;
+   tstop(impuls_Oxy_obs1);
+   tstop(pause_Oxy_obs1);    
+   pause_Oxy_obs1 :=t#0s;    
+   impuls_Oxy_obs1 :=t#0s;          
+   end_if;
+
+
+//Observateur 2
+//azote
+
+   if data10 > data108 +REAL(5.5)                        // <-- Modifier le chiffre entre () pour modifier la consigne de déclenchement de l azote
+      then data31 := true;
+         tstart(impuls_Azot_obs2);
+         tstop(pause_oxy_obs2);
+         pause_oxy_obs2 := t#0s;
+         impuls_Oxy_obs2 :=t#0s;
+         if impuls_Azot_obs2 >= t#500ms                        // <-- Modifier le chiffre en gris pour modifier la tempo d'ouverture de l'electrovanne
+            then data31 := false;
+               tstop(impuls_Azot_obs2);
+               tstart(pause_Azot_obs2);
+               if pause_Azot_obs2 >= t#10s
+                  then tstop(pause_Azot_obs2);
+                     pause_Azot_obs2 :=t#0s;
+                     impuls_Azot_obs2 :=t#0s;
+               end_if;
+         end_if;
+   else data31 := false;
+   tstop(pause_Azot_obs2);
+   tstop(impuls_Azot_obs2);
+   pause_Azot_obs2 :=t#0s;
+   impuls_Azot_obs2 :=t#0s;
+   end_if;
+
+//Oxygène
+
+   if data10 < data108 +REAL(1)                        
+      then  data34 := true;
+          tstart(impuls_Oxy_obs2);
+          tstop(pause_Azot_obs2);
+          pause_Azot_obs2 :=t#0s;
+          impuls_Azot_obs2 :=t#0s;
+          if impuls_Oxy_obs2 >= t#500ms                     
+            then data34 := false;
+                tstop(impuls_Oxy_obs2);
+                tstart(pause_Oxy_obs2);
+                if pause_Oxy_obs2 >= t#60s                  
+                   then tstop(pause_Oxy_obs2);      
+                       pause_Oxy_obs2 :=t#0s;
+                       impuls_Oxy_obs2 :=t#0s;    
+                end_if;         
+           end_if;
+   else data34 := false;
+   tstop(impuls_Oxy_obs2);
+   tstop(pause_Oxy_obs2);    
+   pause_Oxy_obs2 :=t#0s;    
+   impuls_Oxy_obs2 :=t#0s;             
+   end_if;
+   end_if;
+
+
+/////////////////////////////////////////////////////////////////////////
+//              a t=140 consignes à 40%                               //
+///////////////////////////////////////////////////////////////////////
+
+
+//descente 
+
+
+   if timer>t#146m and timer<=t#156m                                   // <-- Modifier les chiffre en gris pour modifier la tempo 
+   then data108 :=  real(40);
+
+//Observateur 1
+//Azote
+
+
+ if data9 > data108 +REAL(0)                        
+      then data30 := true;
+         tstart(impuls_Azot_obs1);
+         tstop(pause_oxy_obs1);
+         pause_oxy_obs1 := t#0s;
+         impuls_Oxy_obs1 :=t#0s;
+         if impuls_Azot_obs1 >= t#500ms                 
+            then data30 := false;
+               tstop(impuls_Azot_obs1);
+               tstart(pause_Azot_obs1);
+               if pause_Azot_obs1 >= t#10s                 
+                  then tstop(pause_Azot_obs1);
+                     pause_Azot_obs1 :=t#0s;
+                     impuls_Azot_obs1 :=t#0s;
+               end_if;
+         end_if;
+   else data30 := false;
+   tstop(pause_Azot_obs1);
+   tstop(impuls_Azot_obs1);
+   pause_Azot_obs1 :=t#0s;
+   impuls_Azot_obs1 :=t#0s;
+   end_if;
+
+//Oxygène
+
+   if data9 < data108 +REAL(-6)                         
+      then  data32 := true;
+          tstart(impuls_Oxy_obs1);
+          tstop(pause_Azot_obs1);
+          pause_Azot_obs1 :=t#0s;
+          impuls_Azot_obs1 :=t#0s;
+          if impuls_Oxy_obs1 >= t#500ms                
+            then  data32 := false;
+                 tstop(impuls_Oxy_obs1);
+                 tstart(pause_Oxy_obs1);
+                 if pause_Oxy_obs1 >= t#60s                   
+                   then tstop(pause_Oxy_obs1);
+                       pause_Oxy_obs1 :=t#0s;
+                       impuls_Oxy_obs1 :=t#0s;
+                 end_if;
+          end_if;
+   else data32 := false;
+   tstop(impuls_Oxy_obs1);
+   tstop(pause_Oxy_obs1);    
+   pause_Oxy_obs1 :=t#0s;    
+   impuls_Oxy_obs1 :=t#0s;          
+   end_if;
+
+
+
+//Observateur 2
+//azote
+
+   if data10 > data108 +REAL(3.5)                        // <-- Modifier le chiffre entre () pour modifier la consigne de déclenchement de l azote
+      then data31 := true;
+         tstart(impuls_Azot_obs2);
+         tstop(pause_oxy_obs2);
+         pause_oxy_obs2 := t#0s;
+         impuls_Oxy_obs2 :=t#0s;
+         if impuls_Azot_obs2 >= t#500ms                        // <-- Modifier le chiffre en gris pour modifier la tempo d'ouverture de l'electrovanne
+            then data31 := false;
+               tstop(impuls_Azot_obs2);
+               tstart(pause_Azot_obs2);
+               if pause_Azot_obs2 >= t#10s
+                  then tstop(pause_Azot_obs2);
+                     pause_Azot_obs2 :=t#0s;
+                     impuls_Azot_obs2 :=t#0s;
+               end_if;
+         end_if;
+   else data31 := false;
+   tstop(pause_Azot_obs2);
+   tstop(impuls_Azot_obs2);
+   pause_Azot_obs2 :=t#0s;
+   impuls_Azot_obs2 :=t#0s;
+   end_if;
+
+//Oxygène
+
+   if data10 < data108 +REAL(-2.5)                      
+      then  data34 := true;
+          tstart(impuls_Oxy_obs2);
+          tstop(pause_Azot_obs2);
+          pause_Azot_obs2 :=t#0s;
+          impuls_Azot_obs2 :=t#0s;
+          if impuls_Oxy_obs2 >= t#500ms               
+            then data34 := false;
+                tstop(impuls_Oxy_obs2);
+                tstart(pause_Oxy_obs2);
+                if pause_Oxy_obs2 >= t#60s        
+                   then tstop(pause_Oxy_obs2);      
+                       pause_Oxy_obs2 :=t#0s;
+                       impuls_Oxy_obs2 :=t#0s;    
+                end_if;         
+           end_if;
+   else data34 := false;
+   tstop(impuls_Oxy_obs2);
+   tstop(pause_Oxy_obs2);    
+   pause_Oxy_obs2 :=t#0s;    
+   impuls_Oxy_obs2 :=t#0s;             
+   end_if;
+   end_if;
+
+
+
+//palier
+
+   if timer>t#156m and timer<=t#172m                                   // <-- Modifier les chiffre en gris pour modifier la tempo 
+   then data108 :=  real(40);
+
+//Observateur 1
+//Azote
+
+
+ if data9 > data108 +REAL(0.5)                       
+      then data30 := true;
+         tstart(impuls_Azot_obs1);
+         tstop(pause_oxy_obs1);
+         pause_oxy_obs1 := t#0s;
+         impuls_Oxy_obs1 :=t#0s;
+         if impuls_Azot_obs1 >= t#500ms            
+            then data30 := false;
+               tstop(impuls_Azot_obs1);
+               tstart(pause_Azot_obs1);
+               if pause_Azot_obs1 >= t#8s          
+                  then tstop(pause_Azot_obs1);
+                     pause_Azot_obs1 :=t#0s;
+                     impuls_Azot_obs1 :=t#0s;
+               end_if;
+         end_if;
+   else data30 := false;
+   tstop(pause_Azot_obs1);
+   tstop(impuls_Azot_obs1);
+   pause_Azot_obs1 :=t#0s;
+   impuls_Azot_obs1 :=t#0s;
+   end_if;
+
+//Oxygène
+
+   if data9 < data108 +REAL(-4)                   
+      then  data32 := true;
+          tstart(impuls_Oxy_obs1);
+          tstop(pause_Azot_obs1);
+          pause_Azot_obs1 :=t#0s;
+          impuls_Azot_obs1 :=t#0s;
+          if impuls_Oxy_obs1 >= t#500ms               
+            then  data32 := false;
+                 tstop(impuls_Oxy_obs1);
+                 tstart(pause_Oxy_obs1);
+                 if pause_Oxy_obs1 >= t#60s           
+                   then tstop(pause_Oxy_obs1);
+                       pause_Oxy_obs1 :=t#0s;
+                       impuls_Oxy_obs1 :=t#0s;
+                 end_if;
+          end_if;
+   else data32 := false;
+   tstop(impuls_Oxy_obs1);
+   tstop(pause_Oxy_obs1);    
+   pause_Oxy_obs1 :=t#0s;    
+   impuls_Oxy_obs1 :=t#0s;          
+   end_if;
+
+//Observateur 2
+//azote
+
+   if data10 > data108 +REAL(4)                        // <-- Modifier le chiffre entre () pour modifier la consigne de déclenchement de l azote
+      then data31 := true;
+         tstart(impuls_Azot_obs2);
+         tstop(pause_oxy_obs2);
+         pause_oxy_obs2 := t#0s;
+         impuls_Oxy_obs2 :=t#0s;
+         if impuls_Azot_obs2 >= t#500ms                        // <-- Modifier le chiffre en gris pour modifier la tempo d'ouverture de l'electrovanne
+            then data31 := false;
+               tstop(impuls_Azot_obs2);
+               tstart(pause_Azot_obs2);
+               if pause_Azot_obs2 >= t#8s
+                  then tstop(pause_Azot_obs2);
+                     pause_Azot_obs2 :=t#0s;
+                     impuls_Azot_obs2 :=t#0s;
+               end_if;
+         end_if;
+   else data31 := false;
+   tstop(pause_Azot_obs2);
+   tstop(impuls_Azot_obs2);
+   pause_Azot_obs2 :=t#0s;
+   impuls_Azot_obs2 :=t#0s;
+   end_if;
+
+//Oxygène
+
+   if data10 < data108 +REAL(-0.5)                       
+      then  data34 := true;
+          tstart(impuls_Oxy_obs2);
+          tstop(pause_Azot_obs2);
+          pause_Azot_obs2 :=t#0s;
+          impuls_Azot_obs2 :=t#0s;
+          if impuls_Oxy_obs2 >= t#500ms                
+            then data34 := false;
+                tstop(impuls_Oxy_obs2);
+                tstart(pause_Oxy_obs2);
+                if pause_Oxy_obs2 >= t#60s            
+                   then tstop(pause_Oxy_obs2);      
+                       pause_Oxy_obs2 :=t#0s;
+                       impuls_Oxy_obs2 :=t#0s;    
+                end_if;         
+           end_if;
+   else data34 := false;
+   tstop(impuls_Oxy_obs2);
+   tstop(pause_Oxy_obs2);    
+   pause_Oxy_obs2 :=t#0s;    
+   impuls_Oxy_obs2 :=t#0s;             
+   end_if;
+   end_if;
+
+
+
+/////////////////////////////////////////////////////////////////////////
+//              a t=165 consignes à 30%                               //
+///////////////////////////////////////////////////////////////////////
+
+
+//descente
+
+   if timer>t#172m and timer<=t#182m                                   // <-- Modifier les chiffre en gris pour modifier la tempo 
+   then data108 :=  real(30);                                
+
+
+//Observateur 1
+//Azote
+
+
+ if data9 > data108 +REAL(-2.5)                           
+      then data30 := true;
+         tstart(impuls_Azot_obs1);
+         tstop(pause_oxy_obs1);
+         pause_oxy_obs1 := t#0s;
+         impuls_Oxy_obs1 :=t#0s;
+         if impuls_Azot_obs1 >= t#500ms                 
+            then data30 := false;
+               tstop(impuls_Azot_obs1);
+               tstart(pause_Azot_obs1);
+               if pause_Azot_obs1 >= t#6s           
+                  then tstop(pause_Azot_obs1);
+                     pause_Azot_obs1 :=t#0s;
+                     impuls_Azot_obs1 :=t#0s;
+               end_if;
+         end_if;
+   else data30 := false;
+   tstop(pause_Azot_obs1);
+   tstop(impuls_Azot_obs1);
+   pause_Azot_obs1 :=t#0s;
+   impuls_Azot_obs1 :=t#0s;
+   end_if;
+
+//Oxygène
+
+   if data9 < data108 +REAL(-9)                                 
+      then  data32 := true;
+          tstart(impuls_Oxy_obs1);
+          tstop(pause_Azot_obs1);
+          pause_Azot_obs1 :=t#0s;
+          impuls_Azot_obs1 :=t#0s;
+          if impuls_Oxy_obs1 >= t#500ms                                 
+             then  data32 := false;
+                 tstop(impuls_Oxy_obs1);
+                 tstart(pause_Oxy_obs1);
+                 if pause_Oxy_obs1 >= t#60s                                 
+                   then tstop(pause_Oxy_obs1);
+                       pause_Oxy_obs1 :=t#0s;
+                       impuls_Oxy_obs1 :=t#0s;
+                 end_if;
+          end_if;
+   else data32 := false;
+   tstop(impuls_Oxy_obs1);
+   tstop(pause_Oxy_obs1);    
+   pause_Oxy_obs1 :=t#0s;    
+   impuls_Oxy_obs1 :=t#0s;          
+   end_if;
+
+//Observateur 2
+//azote
+
+   if data10 > data108 +REAL(6.5)                     
+      then data31 := true;
+         tstart(impuls_Azot_obs2);
+         tstop(pause_oxy_obs2);
+         pause_oxy_obs2 := t#0s;
+         impuls_Oxy_obs2 :=t#0s;
+         if impuls_Azot_obs2 >= t#500ms                      
+            then data31 := false;
+               tstop(impuls_Azot_obs2);
+               tstart(pause_Azot_obs2);
+               if pause_Azot_obs2 >= t#6s
+                  then tstop(pause_Azot_obs2);
+                     pause_Azot_obs2 :=t#0s;
+                     impuls_Azot_obs2 :=t#0s;
+               end_if;
+         end_if;
+   else data31 := false;
+   tstop(pause_Azot_obs2);
+   tstop(impuls_Azot_obs2);
+   pause_Azot_obs2 :=t#0s;
+   impuls_Azot_obs2 :=t#0s;
+   end_if;
+
+//Oxygène
+
+   if data10 < data108 +REAL(0)                                  
+      then  data34 := true;
+          tstart(impuls_Oxy_obs2);
+          tstop(pause_Azot_obs2);
+          pause_Azot_obs2 :=t#0s;
+          impuls_Azot_obs2 :=t#0s;
+          if impuls_Oxy_obs2 >= t#500ms                                  
+            then data34 := false;
+                tstop(impuls_Oxy_obs2);
+                tstart(pause_Oxy_obs2);
+                if pause_Oxy_obs2 >= t#60s                                 
+                   then tstop(pause_Oxy_obs2);      
+                       pause_Oxy_obs2 :=t#0s;
+                       impuls_Oxy_obs2 :=t#0s;    
+                end_if;         
+           end_if;
+   else data34 := false;
+   tstop(impuls_Oxy_obs2);
+   tstop(pause_Oxy_obs2);    
+   pause_Oxy_obs2 :=t#0s;    
+   impuls_Oxy_obs2 :=t#0s;             
+   end_if;
+   end_if;
+
+
+//palier
+
+
+//descente
+
+   if timer>t#182m                                   // <-- Modifier le chiffre en gris pour modifier la tempo 
+   then data108 :=  real(30);                                
+
+
+//Observateur 1
+//Azote
+
+
+ if data9 > data108 +REAL(-5.5)                                  
+      then data30 := true;
+         tstart(impuls_Azot_obs1);
+         tstop(pause_oxy_obs1);
+         pause_oxy_obs1 := t#0s;
+         impuls_Oxy_obs1 :=t#0s;
+         if impuls_Azot_obs1 >= t#500ms                                 
+            then data30 := false;
+               tstop(impuls_Azot_obs1);
+               tstart(pause_Azot_obs1);
+               if pause_Azot_obs1 >= t#4s                                  
+                  then tstop(pause_Azot_obs1);
+                     pause_Azot_obs1 :=t#0s;
+                     impuls_Azot_obs1 :=t#0s;
+               end_if;
+         end_if;
+   else data30 := false;
+   tstop(pause_Azot_obs1);
+   tstop(impuls_Azot_obs1);
+   pause_Azot_obs1 :=t#0s;
+   impuls_Azot_obs1 :=t#0s;
+   end_if;
+
+//Oxygène
+
+   if data9 < data108 +REAL(-12)                                   
+      then  data32 := true;
+          tstart(impuls_Oxy_obs1);
+          tstop(pause_Azot_obs1);
+          pause_Azot_obs1 :=t#0s;
+          impuls_Azot_obs1 :=t#0s;
+          if impuls_Oxy_obs1 >= t#500ms                                 
+             then  data32 := false;
+                 tstop(impuls_Oxy_obs1);
+                 tstart(pause_Oxy_obs1);
+                 if pause_Oxy_obs1 >= t#60s                                
+                   then tstop(pause_Oxy_obs1);
+                       pause_Oxy_obs1 :=t#0s;
+                       impuls_Oxy_obs1 :=t#0s;
+                 end_if;
+          end_if;
+   else data32 := false;
+   tstop(impuls_Oxy_obs1);
+   tstop(pause_Oxy_obs1);    
+   pause_Oxy_obs1 :=t#0s;    
+   impuls_Oxy_obs1 :=t#0s;          
+   end_if;
+
+
+//Observateur 2
+//azote
+
+   if data10 > data108 +REAL(6.5)                        
+      then data31 := true;
+         tstart(impuls_Azot_obs2);
+         tstop(pause_oxy_obs2);
+         pause_oxy_obs2 := t#0s;
+         impuls_Oxy_obs2 :=t#0s;
+         if impuls_Azot_obs2 >= t#500ms                   
+            then data31 := false;
+               tstop(impuls_Azot_obs2);
+               tstart(pause_Azot_obs2);
+               if pause_Azot_obs2 >= t#4s
+                  then tstop(pause_Azot_obs2);
+                     pause_Azot_obs2 :=t#0s;
+                     impuls_Azot_obs2 :=t#0s;
+               end_if;
+         end_if;
+   else data31 := false;
+   tstop(pause_Azot_obs2);
+   tstop(impuls_Azot_obs2);
+   pause_Azot_obs2 :=t#0s;
+   impuls_Azot_obs2 :=t#0s;
+   end_if;
+
+//Oxygène
+
+   if data10 < data108 +REAL(0)                                  
+      then  data34 := true;
+          tstart(impuls_Oxy_obs2);
+          tstop(pause_Azot_obs2);
+          pause_Azot_obs2 :=t#0s;
+          impuls_Azot_obs2 :=t#0s;
+          if impuls_Oxy_obs2 >= t#500ms                                  
+            then data34 := false;
+                tstop(impuls_Oxy_obs2);
+                tstart(pause_Oxy_obs2);
+                if pause_Oxy_obs2 >= t#60s                                 
+                   then tstop(pause_Oxy_obs2);      
+                       pause_Oxy_obs2 :=t#0s;
+                       impuls_Oxy_obs2 :=t#0s;    
+                end_if;         
+           end_if;
+   else data34 := false;
+   tstop(impuls_Oxy_obs2);
+   tstop(pause_Oxy_obs2);    
+   pause_Oxy_obs2 :=t#0s;    
+   impuls_Oxy_obs2 :=t#0s;             
+   end_if;
+   end_if;
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                  Fin Hypoxie                                                                           //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
