@@ -1,0 +1,25 @@
+60001	60002	60003	60004	60005	60006	60101	60102	60103	60104	60105	60106	60107	60108	60109	60110	60111	60112	60113	60114	60115	60116	60117	60118	60119	60120	60121	60122
+Aslchimi - Aloses Feintes	4	0	0	0		PH1	1	0	1	0	upH			0						0		1		3	5		
+Aslchimi - Aloses Feintes	4	0	0	0		T1	2	0	1	0	°C			0						0		1		3	5		
+Aslchimi - Aloses Feintes	4	0	0	0		PH2	3	0	1	0	upH			0						0		1		3	5		
+Aslchimi - Aloses Feintes	4	0	0	0		T2	4	0	1	0	°C			0						0		1		3	5		
+Aslchimi - Aloses Feintes	4	0	0	0		PH3	5	0	1	0	upH			0						0		1		3	5		
+Aslchimi - Aloses Feintes	4	0	0	0		T3	6	0	1	0	°C			0						0		1		3	5		
+Aslchimi - Aloses Feintes	4	0	0	0		PH4	7	0	1	0	upH			0						0		1		3	5		
+Aslchimi - Aloses Feintes	4	0	0	0		T4	8	0	1	0	°C			0						0		1		3	5		
+Aslchimi - Aloses Feintes	4	0	0	0		PH5	9	0	1	0	upH			0						0		1		3	5		
+Aslchimi - Aloses Feintes	4	0	0	0		T5	10	0	1	0	°C			0						0		1		3	5		
+Aslchimi - Aloses Feintes	4	0	0	0		TECO T1	20	1	0	1		Repos	Actif	0						0		0		3	5		
+Aslchimi - Aloses Feintes	4	0	0	0		TECO T2	21	1	0	1		Repos	Actif	0						0		0		3	5		
+Aslchimi - Aloses Feintes	4	0	0	0		TECO T3	22	1	0	1		Repos	Actif	0						0		0		3	5		
+Aslchimi - Aloses Feintes	4	0	0	0		ThR T3	23	1	0	1		Repos	Actif	0						0		0		3	5		
+Aslchimi - Aloses Feintes	4	0	0	0		ThR T4	24	1	0	1		Repos	Actif	0						0		0		3	5		
+Aslchimi - Aloses Feintes	4	0	0	0		ThR T5	25	1	0	1		Repos	Actif	0						0		0		3	5		
+Aslchimi - Aloses Feintes	4	0	0	0		EV OXYGENE	26	1	0	1		Repos	Actif	0						0		0		3	5		
+Aslchimi - Aloses Feintes	4	0	0	0		consigne Température 1	30	1	1	1	°C			0						0		0		3	5	0,000000	100,000000
+Aslchimi - Aloses Feintes	4	0	0	0		consigne Température 2	31	1	1	1	°C			0						0		0		3	5	0,000000	100,000000
+Aslchimi - Aloses Feintes	4	0	0	0		consigne Température 3	32	1	1	1	°C			0						0		0		3	5	0,000000	100,000000
+Aslchimi - Aloses Feintes	4	0	0	0		consigne Température 4	33	1	1	1	°C			0						0		0		3	5	0,000000	100,000000
+Aslchimi - Aloses Feintes	4	0	0	0		consigne Température 5	34	1	1	1	°C			0						0		0		3	5	0,000000	100,000000
+Aslchimi - Aloses Feintes	4	0	0	0		Seuil d`alarme Inférieur	35	1	1	1	°C			0						0		0		3	5	0,000000	100,000000
+Aslchimi - Aloses Feintes	4	0	0	0		Seuil d`alarme Supérieur	36	1	1	1	°C			0						0		0		3	5	0,000000	100,000000

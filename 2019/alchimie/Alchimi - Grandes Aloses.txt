@@ -1,0 +1,21 @@
+60001	60002	60003	60004	60005	60006	60101	60102	60103	60104	60105	60106	60107	60108	60109	60110	60111	60112	60113	60114	60115	60116	60117	60118	60119	60120	60121	60122
+Alchimi - Grande Aloses	5	0	0	0		AAPH1 S1PH	1	0	1	0	upH			0						0		1		3	5		
+Alchimi - Grande Aloses	5	0	0	0		AAPH1 S1Temp	2	0	1	0	°C			0						0		1		3	5		
+Alchimi - Grande Aloses	5	0	0	0		AAPH2 S1PH	3	0	1	0	upH			0						0		1		3	5		
+Alchimi - Grande Aloses	5	0	0	0		AAPH2 S1Temp	4	0	1	0	°C			0						0		1		3	5		
+Alchimi - Grande Aloses	5	0	0	0		AAPH3 S1PH	5	0	1	0	upH			0						0		1		3	5		
+Alchimi - Grande Aloses	5	0	0	0		AAPH3 S1Temp	6	0	1	0	°C			0						0		1		3	5		
+Alchimi - Grande Aloses	5	0	0	0		AAPH4 S1PH	7	0	1	0	upH			0						0		1		3	5		
+Alchimi - Grande Aloses	5	0	0	0		AAPH4 S1Temp	8	0	1	0	°C			0						0		1		3	5		
+Alchimi - Grande Aloses	5	0	0	0		AAPH5 S1PH	9	0	1	0	upH			0						0		1		3	5		
+Alchimi - Grande Aloses	5	0	0	0		AAPH5 S1Temp	10	0	1	0	°C			0						0		1		3	5		
+Alchimi - Grande Aloses	5	0	0	0		AAPH1 S2O²	20	0	1	0	%			0						0		1		3	5		
+Alchimi - Grande Aloses	5	0	0	0		AAPH1 S2Temp	21	0	1	0	°C			0						0		1		3	5		
+Alchimi - Grande Aloses	5	0	0	0		AAPH2 S2O²	22	0	1	0	%			0						0		1		3	5		
+Alchimi - Grande Aloses	5	0	0	0		AAPH2 S2Temp	23	0	1	0	°C			0						0		1		3	5		
+Alchimi - Grande Aloses	5	0	0	0		AAPH3 S2O²	24	0	1	0	%			0						0		1		3	5		
+Alchimi - Grande Aloses	5	0	0	0		AAPH3 S2Temp	25	0	1	0	°C			0						0		1		3	5		
+Alchimi - Grande Aloses	5	0	0	0		AAPH4 S2O²	26	0	1	0	%			0						0		1		3	5		
+Alchimi - Grande Aloses	5	0	0	0		AAPH4 S2Temp	27	0	1	0	°C			0						0		1		3	5		
+Alchimi - Grande Aloses	5	0	0	0		AAPH5 S2O²	28	0	1	0	%			0						0		1		3	5		
+Alchimi - Grande Aloses	5	0	0	0		AAPH5 S2Temp	29	0	1	0	°C			0						0		1		3	5		
